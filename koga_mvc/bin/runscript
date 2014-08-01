@@ -1,0 +1,22 @@
+#!/usr/bin/php
+
+<?php
+
+require_once(dirname(__FILE__) . '/../config/app.inc.php');
+require_once(dirname(__FILE__) . '/../config/db.inc.php');
+require_once(dirname(__FILE__) . '/../application/lib/base_class.class.php');
+require_once(dirname(__FILE__) . '/../application/lib/config.class.php');
+require_once(dirname(__FILE__) . '/../application/lib/dispatcher.class.php');
+require_once(dirname(__FILE__) . '/../application/lib/util.class.php');
+require_once(dirname(__FILE__) . '/../application/lib/controller.class.php');
+require_once(dirname(__FILE__) . '/../application/lib/model.class.php');
+require_once(dirname(__FILE__) . '/../application/lib/script.class.php');
+require_once(dirname(__FILE__) . '/../application/lib/core_exception.class.php');
+require_once(dirname(__FILE__) . '/../application/lib/model_exception.class.php');
+require_once(dirname(__FILE__) . '/../application/lib/action_exception.class.php');
+require_once(dirname(__FILE__) . '/../application/lib/script_exception.class.php');
+require_once(dirname(__FILE__) . '/../application/lib/config_exception.class.php');
+require_once(dirname(__FILE__) . '/../application/vendor/Smarty/Smarty.class.php');
+
+$dispatcher = new Dispatcher();
+$dispatcher->runscript($argv[1], $argv);

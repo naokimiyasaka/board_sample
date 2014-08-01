@@ -1,0 +1,1092 @@
+Index: css/body_css.css
+===================================================================
+--- css/body_css.css	(revision 0)
++++ css/body_css.css	(working copy)
+@@ -0,0 +1,60 @@
++body { background-color : black; }
++.tw { 
++	font-size : 10pt;
++	color : white
++}
++
++a {
++	color : white;
++}
++
++.img0 {
++
++	position: absolute;
++	clip: rect(0px 0px 31px 49px)
++}
++
++.img1 {
++	position: absolute;
++	clip: rect(31px 0px 31px 49px)
++}
++
++.img2 {
++	position: absolute;
++	clip: rect(62px 0px 31px 49px)
++}
++
++.img3 {
++	position: absolute;
++	clip: rect(93px 0px 31px 49px)
++}
++
++.img4 {
++	position: absolute;
++	clip: rect(124px 0px 31px 49px)
++}
++
++.img5 {
++	position: absolute;
++	clip: rect(155px 0px 31px 49px)
++}
++
++.img6 {
++	position: absolute;
++	clip: rect(186px 0px 31px 49px)
++}
++
++.img7 {
++	position: absolute;
++	clip: rect(217px 0px 31px 49px)
++}
++
++.img8 {
++	position: absolute;
++	clip: rect(248px 0px 31px 49px)
++}
++
++.img9 {
++	position: absolute;
++	clip: rect(279px 0px 31px 49px)
++}
+Index: delete.php
+===================================================================
+--- delete.php	(revision 0)
++++ delete.php	(working copy)
+@@ -0,0 +1,20 @@
++<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
++ "http://www.w3.org/TR/html4/loose.dtd">
++
++<html>
++
++	<head>
++		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
++		<link rel="stylesheet" type="text/css" href="./css/body_css.css">
++		<title>削除画面</title>
++	</head>
++
++	<body>
++		<font class="tw"><hr><center>削除画面</center></font><br>
++		<center>
++		<font class="tw"><?php include_once("./php/sql_re_delete.php"); ?></font>
++		</center>
++		<br>
++		<a href="index.php"><center>HOME</center></a><br>
++	</body>
++</html>
+Index: details.php
+===================================================================
+--- details.php	(revision 0)
++++ details.php	(working copy)
+@@ -0,0 +1,20 @@
++<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
++ "http://www.w3.org/TR/html4/loose.dtd">
++
++<html>
++
++    <head>
++        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
++        <link rel="stylesheet" type="text/css" href="./css/body_css.css">
++        <title>詳細画面</title>
++    </head>
++
++    <body>
++        <font class="tw"><hr><center>詳細画面</center><br></font>
++        <center>
++		<font class="tw"><?php include_once("./php/sql_details.php"); ?></font>
++		</center>
++        <br>
++        <a href="index.php"><center>HOME</center></a><br>
++    </body>
++</html>
+Index: edit.php
+===================================================================
+--- edit.php	(revision 0)
++++ edit.php	(working copy)
+@@ -0,0 +1,20 @@
++<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
++ "http://www.w3.org/TR/html4/loose.dtd">
++
++<html>
++
++	<head>
++		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
++		<link rel="stylesheet" type="text/css" href="./css/body_css.css">
++		<title>編集画面</title>
++	</head>
++
++	<body>
++		<font class="tw"><hr><center>編集画面</center><br></font>
++		<center>
++		<font class="tw"><?php include_once("./php/sql_re_edit.php"); ?></font>
++		</center>
++		<br>
++		<a href="index.php"><center>HOME</center></a><br>
++	</body>
++</html>
+Index: index.php
+===================================================================
+--- index.php	(revision 0)
++++ index.php	(working copy)
+@@ -0,0 +1,21 @@
++<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
++ "http://www.w3.org/TR/html4/loose.dtd">
++
++<html>
++
++    <head>
++        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
++        <link rel="stylesheet" type="text/css" href="./css/body_css.css">
++        <title>掲示板 一覧画面</title>
++    </head>
++
++    <body><!--見えずらいから全部白-->
++        <font class="tw"><strong><center>目次</center></strong></font><br>
++        <table border=1 width=350 align=center>
++        <tr align=center>
++        <td><a href="registration.php">新規登録</a></td>
++        </tr>
++        </table>
++        <font class="tw"><?PHP include_once("./php/sql_dispmain.php"); ?></font>
++    </body>
++</html>
+Index: php/sql_details.php
+===================================================================
+--- php/sql_details.php	(revision 0)
++++ php/sql_details.php	(working copy)
+@@ -0,0 +1,130 @@
++<?PHP
++class DetailLayout{//受信してレイアウト作成
++        private $_link = 0;
++        //コンストラクタ
++        public function __construct()
++        {
++            $this->_link = self::connect();//データベースにアクセス
++        }
++
++        //デストラクタ　ファイルをクローズする
++        public function __destruct()
++        {
++            self::disconnect($this->_link);//データベース切断
++        }
++
++        //登録したテーブルのデータを受信する
++        public function ReceptionSql()
++        {
++            $boardid   = $this->GetPost('ID');
++
++            //トランザクションを開始
++            mysql_query("set autocommit = 0", $this->_link);
++            mysql_query("begin", $this->_link);
++            mysql_query("set character set utf8");
++            
++            // SQL文の実行
++            $result = mysql_query("select * from BOARD where boardid=$boardid",$this->_link);
++
++            //掲示板のレイアウトを作成
++            $this->CreateLayout($result);
++
++            //トランザクション終了
++            if( $result ) {
++                mysql_query("commit", $this->_link);//更新
++            }
++            else {
++                mysql_query("roolback", $this->_link);//ロールバック
++            }
++        }
++
++        //サーバー、データベースアクセス処理
++        function connect()
++        {
++            //DB接続 処理
++            $db_host = "localhost";//サーバーの場所
++            $db_user = "root";      //ユーザー
++            $db_pass = "0okm9ijn!!";//パスワード
++
++            $link = mysql_connect($db_host, $db_user, $db_pass);
++
++            if( !$link ) print "サーバー接続失敗";
++
++            //データベースの選択
++            $db_name = "naokimiyasaka";
++
++            $sdb = mysql_select_db($db_name, $link);
++
++            if( !$sdb ) print "データベース選択失敗";
++
++            return $link;
++        }
++
++        //サーバー切断
++        function disconnect($link) 
++        {
++            //サーバー切断
++            if( !mysql_close($link) ) print "データベース削除失敗";
++        }
++
++        //_POSTからデータを取得する
++        public function GetPost($key)
++        {
++            if( $key == '' ) {//何も指定しない場合は全部送る
++                return $_POST;
++            }
++            else {
++                return $_POST[$key];
++            }
++        }
++
++        //掲示板のレイアウトを作る  メイン
++        public function CreateLayout($sql_data)
++        {
++            print("<table border=4 width=500 align=center>");
++
++            // 結果セットの各レコードを順次、連想配列に格納する
++            while($arr_record = mysql_fetch_assoc($sql_data))
++            {
++                $this->CreateLayoutSub($arr_record);
++                print "<br>\n";
++            }
++
++            print("</table>");
++        }
++
++        public function CreateLayoutSub($arr_data)
++        {
++            $boardid  = $arr_data['boardid'];
++            $subject  = $arr_data['subject'];
++            $name     = $arr_data['name'];
++            $mail     = $arr_data['mail'];
++            $maintext = $arr_data['maintext'];
++
++            print("<table border=4 width=500 align=center>");
++            print("<tr align=center>");
++            print("<input type=\"hidden\" name='ID' value=\"$boardid\">");//ID
++            print("<td><font class=\"tw\"><p><label>件名:$subject</font></tb>");
++            print("<td><font class=\"tw\"><p><label>名前:$name</font></tb>");
++            print("</tr>");
++            print("<tr align=center>");
++            print("<td colspan=4><font class=\"tw\"><p><label>メールアドレス:$mail</font></tb>");
++            print("</tr>");
++            print("<tr align=center>");
++            print("<td><font class=\"tw\"><p><label>本文:</font></td>");
++            print("<td colspan=4><textarea name=\"MSG\" cols=40 rows=4>$maintext</textarea>");
++            print("</label></p>");
++            print("</tr>");
++            print("</label>");
++            print("</table>");
++            print("<br>");
++            print("<center>");
++            print("</center>");
++            print("</form>");
++        }
++    }
++
++    $detail = new DetailLayout();
++    $detail->ReceptionSql();
++    //header("Location: ../index.php");//別のページに遷移させる
++?>
+\ No newline at end of file
+Index: php/sql_dispmain.php
+===================================================================
+--- php/sql_dispmain.php	(revision 0)
++++ php/sql_dispmain.php	(working copy)
+@@ -0,0 +1,180 @@
++<?PHP
++//すべて出来上がったときに継承などを使用してリファクタリングする
++class DispMain {//sqlにデータベースにある情報をすべて表示するようにする
++        private $_link = 0;
++
++        //コンストラクタ
++        public function __construct()
++        {
++            $this->_link = self::connect();//データベースにアクセス
++        }
++
++        //デストラクタ　ファイルをクローズする
++        public function __destruct()
++        {
++            self::disconnect($this->_link);//データベース切断
++        }
++
++        //登録したテーブルのデータを受信する
++        public function ReceptionSql()
++        {
++            //トランザクションを開始
++            mysql_query("set autocommit = 0", $this->_link);
++            mysql_query("begin", $this->_link);
++            mysql_query("set character set utf8");
++            
++            // SQL文の実行
++            $result = mysql_query("select * from BOARD",$this->_link);
++
++            //掲示板のレイアウトを作成
++            $this->CreateLayout($result);
++
++            //トランザクション終了
++            if( $result ) {
++                mysql_query("commit", $this->_link);//更新
++            }
++            else {
++                mysql_query("roolback", $this->_link);//ロールバック
++            }
++        }
++
++        //サーバー、データベースアクセス処理
++        public function connect()
++        {
++            //DB接続 処理
++            $db_host = "localhost";//サーバーの場所
++            $db_user = "root";      //ユーザー
++            $db_pass = "0okm9ijn!!";//パスワード
++
++            $link = mysql_connect($db_host, $db_user, $db_pass);
++
++            if( !$link ) print "サーバー接続失敗";
++
++            //データベースの選択
++            $db_name = "naokimiyasaka";
++
++            $sdb = mysql_select_db($db_name, $link);
++
++            if( !$sdb ) print "データベース選択失敗";
++
++            return $link;
++        }
++
++        //サーバー切断
++        public function disconnect($link) 
++        {
++            //サーバー切断
++            if( !mysql_close($link) ) print "データベース削除失敗";
++        }
++
++        //_POSTからデータを取得する
++        public function GetPost($key)
++        {
++            if( $key == '' ) {//何も指定しない場合は全部送る
++                return $_POST;
++            }
++            else {
++                return $_POST[$key];
++            }
++        }
++
++        //掲示板のレイアウトを作る  メイン
++        public function CreateLayout($sql_data)
++        {
++            print("<table border=4 width=500 align=center>");
++
++            // 結果セットの各レコードを順次、連想配列に格納する
++            while($arr_record = mysql_fetch_assoc($sql_data))
++            {
++                // 連想配列のキー値をフィールド名に、
++                // 値をフィールド値として取り出す
++                /*foreach($arr_record as $field_name => $field_value)
++                {
++                    // フィールド名とフィールド値を表示
++                    $this->CreateLayoutSub($field_name, $field_value);
++                }*/
++                
++                $this->CreateLayoutSub2($arr_record);
++                print "<br>\n";
++            }
++
++            print("</table>");
++        }
++
++        //実際のレイアウトをここで
++        public function CreateLayoutSub($key, $value)
++        {
++            switch($key)
++            {
++                case 'boardid':
++                    print("<form action=\"./php/sql_registration.php\" method=\"POST\">");
++                    print("<input type=\"hidden\" name=\"ID\" value=\"$value\">");
++                break;
++                case 'subject':
++                    print("<tr>");
++                    print("<td><font class=\"tw\" style=\"position:relative; float:left;\" ><p><label>件名:$value</font>");
++                break;
++                case 'name':
++                    print("<font class=\"tw\"><p><label>&nbsp;&nbsp;名前:$value</font></tb>");
++                    //print("<form action=\"./php/sql_registration.php\" method=\"POST\">");
++                    print("<input style=\"position:relative; float:left;\" type=submit value=\"編集\">");
++                    print("</form>");
++                    print("<form action=\"./php/sql_registration.php\" method=\"POST\">");
++                    print("<input style=\"position:relative; float:left;\" type=submit value=\"削除\">");
++                    print("</form>");
++                    print("<form action=\"./php/sql_registration.php\" method=\"POST\">");
++                    print("<input style=\"position:relative; float:left;\" type=submit value=\"詳細\">");
++                    print("</form>");
++                    print("</tr>");
++                break;
++                case 'mail':
++                break;
++                case 'maintext':
++                    print("<tr><td colspan=4><font class=\"tw\">$value</font></td></tr>");
++                break;
++                default:
++                    exit("不正な値");
++                break;
++            }
++        }
++
++        //実際のレイアウトをここで
++        public function CreateLayoutSub2($arr_data)
++        {
++            $boardid  = $arr_data['boardid'];
++            $subject  = $arr_data['subject'];
++            $name     = $arr_data['name'];
++            $mail     = $arr_data['mail'];
++            $maintext = $arr_data['maintext'];
++
++            print("<tr>");
++            print("<td><font class=\"tw\" style=\"position:relative; float:left;\" ><p><label>件名:$subject</font>");
++
++            print("<font class=\"tw\"><p><label>&nbsp;&nbsp;名前:$name</font></tb>");
++            print("<br>");
++
++            print("<form action=\"./edit.php\" method=\"POST\">");
++            print("<input type=\"hidden\" name='ID' value=\"$boardid\">");//ID
++            print("<input style=\"position:relative; float:left;\" type=submit value=\"編集\">");
++            print("</form>");
++
++            print("<form action=\"./delete.php\" method=\"POST\">");
++            print("<input type=\"hidden\" name='ID' value=\"$boardid\">");//ID
++            print("<input style=\"position:relative; float:left;\" type=submit value=\"削除\">");
++            print("</form>");
++
++            print("<form action=\"./details.php\" method=\"POST\">");
++            print("<input type=\"hidden\" name='ID' value=\"$boardid\">");//ID
++            print("<input style=\"position:relative; float:left;\" type=submit value=\"詳細\">");
++            print("</form>");
++
++            print("</tr>");
++
++            print("<tr><td colspan=4><font class=\"tw\">$maintext</font></td></tr>");
++        }
++
++    }
++
++    $disp = new DispMain();
++    $disp->ReceptionSql();
++?>
+\ No newline at end of file
+Index: php/sql_re_delete.php
+===================================================================
+--- php/sql_re_delete.php	(revision 0)
++++ php/sql_re_delete.php	(working copy)
+@@ -0,0 +1,132 @@
++<?PHP
++class DeleteReLayout{//受信してレイアウト作成
++        private $_link = 0;
++        //コンストラクタ
++        public function __construct()
++        {
++            $this->_link = self::connect();//データベースにアクセス
++        }
++
++        //デストラクタ　ファイルをクローズする
++        public function __destruct()
++        {
++            self::disconnect($this->_link);//データベース切断
++        }
++
++        //登録したテーブルのデータを受信する
++        public function ReceptionSql()
++        {
++            $boardid   = $this->GetPost('ID');
++
++            //トランザクションを開始
++            mysql_query("set autocommit = 0", $this->_link);
++            mysql_query("begin", $this->_link);
++            mysql_query("set character set utf8");
++            
++            // SQL文の実行
++            $result = mysql_query("select * from BOARD where boardid=$boardid",$this->_link);
++
++            //掲示板のレイアウトを作成
++            $this->CreateLayout($result);
++
++            //トランザクション終了
++            if( $result ) {
++                mysql_query("commit", $this->_link);//更新
++            }
++            else {
++                mysql_query("roolback", $this->_link);//ロールバック
++            }
++        }
++
++        //サーバー、データベースアクセス処理
++        function connect()
++        {
++            //DB接続 処理
++            $db_host = "localhost";//サーバーの場所
++            $db_user = "root";      //ユーザー
++            $db_pass = "0okm9ijn!!";//パスワード
++
++            $link = mysql_connect($db_host, $db_user, $db_pass);
++
++            if( !$link ) print "サーバー接続失敗";
++
++            //データベースの選択
++            $db_name = "naokimiyasaka";
++
++            $sdb = mysql_select_db($db_name, $link);
++
++            if( !$sdb ) print "データベース選択失敗";
++
++            return $link;
++        }
++
++        //サーバー切断
++        function disconnect($link) 
++        {
++            //サーバー切断
++            if( !mysql_close($link) ) print "データベース削除失敗";
++        }
++
++        //_POSTからデータを取得する
++        public function GetPost($key)
++        {
++            if( $key == '' ) {//何も指定しない場合は全部送る
++                return $_POST;
++            }
++            else {
++                return $_POST[$key];
++            }
++        }
++
++        //掲示板のレイアウトを作る  メイン
++        public function CreateLayout($sql_data)
++        {
++            print("<table border=4 width=500 align=center>");
++
++            // 結果セットの各レコードを順次、連想配列に格納する
++            while($arr_record = mysql_fetch_assoc($sql_data))
++            {
++                $this->CreateLayoutSub($arr_record);
++                print "<br>\n";
++            }
++
++            print("</table>");
++        }
++
++        public function CreateLayoutSub($arr_data)
++        {
++            $boardid  = $arr_data['boardid'];
++            $subject  = $arr_data['subject'];
++            $name     = $arr_data['name'];
++            $mail     = $arr_data['mail'];
++            $maintext = $arr_data['maintext'];
++
++            print("<form action=\"./php/sql_se_delete.php\" method=\"POST\">");
++            print("<table border=4 width=500 align=center>");
++            print("<tr align=center>");
++            print("<input type=\"hidden\" name='ID' value=\"$boardid\">");//ID
++            print("<td><font class=\"tw\"><p><label>件名:$subject</font></tb>");
++            print("<td><font class=\"tw\"><p><label>名前:$name</font></tb>");
++            print("</tr>");
++            print("<tr align=center>");
++            print("<td colspan=4><font class=\"tw\"><p><label>メールアドレス:$mail</font></tb>");
++            print("</tr>");
++            print("<tr align=center>");
++            print("<td><font class=\"tw\"><p><label>本文:</font></td>");
++            print("<td colspan=4><font class=\"tw\"><p><label>$maintext</font></td>");
++            print("</label></p>");
++            print("</tr>");
++            print("</label>");
++            print("</table>");
++            print("<br>");
++            print("<center>");
++            print("<input type=submit value=\"削除\">");
++            print("</center>");
++            print("</form>");
++        }
++    }
++
++    $de_re_edit = new DeleteReLayout();
++    $de_re_edit->ReceptionSql();
++    //header("Location: ../index.php");//別のページに遷移させる
++?>
+\ No newline at end of file
+Index: php/sql_re_edit.php
+===================================================================
+--- php/sql_re_edit.php	(revision 0)
++++ php/sql_re_edit.php	(working copy)
+@@ -0,0 +1,132 @@
++<?PHP
++class EditReLayout{//受信してレイアウト作成
++        private $_link = 0;
++        //コンストラクタ
++        public function __construct()
++        {
++            $this->_link = self::connect();//データベースにアクセス
++        }
++
++        //デストラクタ　ファイルをクローズする
++        public function __destruct()
++        {
++            self::disconnect($this->_link);//データベース切断
++        }
++
++        //登録したテーブルのデータを受信する
++        public function ReceptionSql()
++        {
++            $boardid   = $this->GetPost('ID');
++
++            //トランザクションを開始
++            mysql_query("set autocommit = 0", $this->_link);
++            mysql_query("begin", $this->_link);
++            mysql_query("set character set utf8");
++            
++            // SQL文の実行
++            $result = mysql_query("select * from BOARD where boardid=$boardid",$this->_link);
++
++            //掲示板のレイアウトを作成
++            $this->CreateLayout($result);
++
++            //トランザクション終了
++            if( $result ) {
++                mysql_query("commit", $this->_link);//更新
++            }
++            else {
++                mysql_query("roolback", $this->_link);//ロールバック
++            }
++        }
++
++        //サーバー、データベースアクセス処理
++        function connect()
++        {
++            //DB接続 処理
++            $db_host = "localhost";//サーバーの場所
++            $db_user = "root";      //ユーザー
++            $db_pass = "0okm9ijn!!";//パスワード
++
++            $link = mysql_connect($db_host, $db_user, $db_pass);
++
++            if( !$link ) print "サーバー接続失敗";
++
++            //データベースの選択
++            $db_name = "naokimiyasaka";
++
++            $sdb = mysql_select_db($db_name, $link);
++
++            if( !$sdb ) print "データベース選択失敗";
++
++            return $link;
++        }
++
++        //サーバー切断
++        function disconnect($link) 
++        {
++            //サーバー切断
++            if( !mysql_close($link) ) print "データベース削除失敗";
++        }
++
++        //_POSTからデータを取得する
++        public function GetPost($key)
++        {
++            if( $key == '' ) {//何も指定しない場合は全部送る
++                return $_POST;
++            }
++            else {
++                return $_POST[$key];
++            }
++        }
++
++        //掲示板のレイアウトを作る  メイン
++        public function CreateLayout($sql_data)
++        {
++            print("<table border=4 width=500 align=center>");
++
++            // 結果セットの各レコードを順次、連想配列に格納する
++            while($arr_record = mysql_fetch_assoc($sql_data))
++            {
++                $this->CreateLayoutSub($arr_record);
++                print "<br>\n";
++            }
++
++            print("</table>");
++        }
++
++        public function CreateLayoutSub($arr_data)
++        {
++            $boardid  = $arr_data['boardid'];
++            $subject  = $arr_data['subject'];
++            $name     = $arr_data['name'];
++            $mail     = $arr_data['mail'];
++            $maintext = $arr_data['maintext'];
++
++            print("<form action=\"./php/sql_se_edit.php\" method=\"POST\">");
++            print("<table border=4 width=500 align=center>");
++            print("<tr align=center>");
++            print("<input type=\"hidden\" name='ID' value=\"$boardid\">");//ID
++            print("<td><font class=\"tw\"><p><label>件名:$subject</font></tb>");
++            print("<td><font class=\"tw\"><p><label>名前:$name</font></tb>");
++            print("</tr>");
++            print("<tr align=center>");
++            print("<td colspan=4><font class=\"tw\"><p><label>メールアドレス:$mail</font></tb>");
++            print("</tr>");
++            print("<tr align=center>");
++            print("<td><font class=\"tw\"><p><label>本文:</font></td>");
++            print("<td colspan=4><textarea name=\"MSG\" cols=40 rows=4>$maintext</textarea>");
++            print("</label></p>");
++            print("</tr>");
++            print("</label>");
++            print("</table>");
++            print("<br>");
++            print("<center>");
++            print("<input type=submit value=\"送信\">");
++            print("</center>");
++            print("</form>");
++        }
++    }
++
++    $re_edit = new EditReLayout();
++    $re_edit->ReceptionSql();
++    //header("Location: ../index.php");//別のページに遷移させる
++?>
+\ No newline at end of file
+Index: php/sql_registration.php
+===================================================================
+--- php/sql_registration.php	(revision 0)
++++ php/sql_registration.php	(working copy)
+@@ -0,0 +1,93 @@
++<?PHP
++class Registration{
++        private $_link = 0;
++        private $_board_id = 0;
++        private $_subject;
++        private $_name;
++        private $_mail;
++        private $_main_text;
++
++        //コンストラクタ
++        public function __construct()
++        {
++            $this->_link = self::connect();//データベースにアクセス
++
++            //POSTに入っている値を取得する
++            $this->_subject   = $this->GetPost('件名');
++            $this->_name      = $this->GetPost('名前');
++            $this->_mail      = $this->GetPost('メールアドレス');
++            $this->_main_text = $this->GetPost('MSG');
++        }
++
++        //デストラクタ　ファイルをクローズする
++        public function __destruct()
++        {
++            self::disconnect($this->_link);//データベース切断
++        }
++
++        //送られたデータをsqlに送る
++        public function SendSql()
++        {
++            //トランザクションを開始
++            mysql_query("set autocommit = 0", $this->_link);
++            mysql_query("begin", $this->_link);
++            
++            //新規登録なので常にレコードを追加する
++            mysql_query("set character set utf8");
++            $result = mysql_query("insert into BOARD (subject, name, mail, maintext) value(\"$this->_subject\", \"$this->_name\", \"$this->_mail\", \"$this->_main_text\")");
++
++            //トランザクション終了
++            if( $result ) {
++                mysql_query("commit", $this->_link);//更新
++            }
++            else {
++                mysql_query("roolback", $this->_link);//ロールバック
++            }
++        }
++
++        //サーバー、データベースアクセス処理
++        function connect()
++        {
++            //DB接続 処理
++            $db_host = "localhost";//サーバーの場所
++            $db_user = "root";      //ユーザー
++            $db_pass = "0okm9ijn!!";//パスワード
++
++            $link = mysql_connect($db_host, $db_user, $db_pass);
++
++            if( !$link ) print "サーバー接続失敗";
++
++            //データベースの選択
++            $db_name = "naokimiyasaka";
++
++            $sdb = mysql_select_db($db_name, $link);
++
++            if( !$sdb ) print "データベース選択失敗";
++
++            return $link;
++        }
++
++        //サーバー切断
++        function disconnect($link) 
++        {
++            //サーバー切断
++            if( !mysql_close($link) ) print "データベース削除失敗";
++        }
++
++        //_POSTからデータを取得する
++        public function GetPost($key)
++        {
++            if( $key == '' ) {//何も指定しない場合は全部送る
++                return $_POST;
++            }
++            else {
++                return $_POST[$key];
++            }
++        }
++    }
++
++    $new_registration = new Registration();
++    $new_registration->SendSql();
++
++    header("Location: ../index.php");//別のページに遷移させる
++?>
+\ No newline at end of file
+Index: php/sql_se_delete.php
+===================================================================
+--- php/sql_se_delete.php	(revision 0)
++++ php/sql_se_delete.php	(working copy)
+@@ -0,0 +1,82 @@
++<?PHP
++class DeleteSend{//送信
++        private $_link = 0;
++        //コンストラクタ
++        public function __construct()
++        {
++            $this->_link = self::connect();//データベースにアクセス
++        }
++
++        //デストラクタ　ファイルをクローズする
++        public function __destruct()
++        {
++            self::disconnect($this->_link);//データベース切断
++        }
++
++        //サーバー、データベースアクセス処理
++        function connect()
++        {
++            //DB接続 処理
++            $db_host = "localhost";//サーバーの場所
++            $db_user = "root";      //ユーザー
++            $db_pass = "0okm9ijn!!";//パスワード
++
++            $link = mysql_connect($db_host, $db_user, $db_pass);
++
++            if( !$link ) print "サーバー接続失敗";
++
++            //データベースの選択
++            $db_name = "naokimiyasaka";
++
++            $sdb = mysql_select_db($db_name, $link);
++
++            if( !$sdb ) print "データベース選択失敗";
++
++            return $link;
++        }
++
++        //サーバー切断
++        function disconnect($link) 
++        {
++            //サーバー切断
++            if( !mysql_close($link) ) print "データベース削除失敗";
++        }
++
++        //_POSTからデータを取得する
++        public function GetPost($key)
++        {
++            if( $key == '' ) {//何も指定しない場合は全部送る
++                return $_POST;
++            }
++            else {
++                return $_POST[$key];
++            }
++        }
++
++        //sqlにsendする
++        public function SqlSend()
++        {
++            $boardid = $this->GetPost('ID');
++            
++            //トランザクションを開始
++            mysql_query("set autocommit = 0", $this->_link);
++            mysql_query("begin", $this->_link);
++            
++            //新規登録なので常にレコードを追加する
++            mysql_query("set character set utf8");
++            $result = mysql_query("delete from BOARD where boardid=$boardid");
++
++            //トランザクション終了
++            if( $result ) {
++                mysql_query("commit", $this->_link);//更新
++            }
++            else {
++                mysql_query("roolback", $this->_link);//ロールバック
++            }
++        }
++    }
++
++    $se_delete = new DeleteSend();
++    $se_delete->SqlSend();
++    header("Location: ../index.php");//別のページに遷移させる
++?>
+\ No newline at end of file
+Index: php/sql_se_edit.php
+===================================================================
+--- php/sql_se_edit.php	(revision 0)
++++ php/sql_se_edit.php	(working copy)
+@@ -0,0 +1,83 @@
++<?PHP
++class EditSend{//送信
++        private $_link = 0;
++        //コンストラクタ
++        public function __construct()
++        {
++            $this->_link = self::connect();//データベースにアクセス
++        }
++
++        //デストラクタ　ファイルをクローズする
++        public function __destruct()
++        {
++            self::disconnect($this->_link);//データベース切断
++        }
++
++        //サーバー、データベースアクセス処理
++        function connect()
++        {
++            //DB接続 処理
++            $db_host = "localhost";//サーバーの場所
++            $db_user = "root";      //ユーザー
++            $db_pass = "0okm9ijn!!";//パスワード
++
++            $link = mysql_connect($db_host, $db_user, $db_pass);
++
++            if( !$link ) print "サーバー接続失敗";
++
++            //データベースの選択
++            $db_name = "naokimiyasaka";
++
++            $sdb = mysql_select_db($db_name, $link);
++
++            if( !$sdb ) print "データベース選択失敗";
++
++            return $link;
++        }
++
++        //サーバー切断
++        function disconnect($link) 
++        {
++            //サーバー切断
++            if( !mysql_close($link) ) print "データベース削除失敗";
++        }
++
++        //_POSTからデータを取得する
++        public function GetPost($key)
++        {
++            if( $key == '' ) {//何も指定しない場合は全部送る
++                return $_POST;
++            }
++            else {
++                return $_POST[$key];
++            }
++        }
++
++        //sqlにsendする
++        public function SqlSend()
++        {
++            $boardid = $this->GetPost('ID');
++            $main_text = $this->GetPost('MSG');
++            
++            //トランザクションを開始
++            mysql_query("set autocommit = 0", $this->_link);
++            mysql_query("begin", $this->_link);
++            
++            //新規登録なので常にレコードを追加する
++            mysql_query("set character set utf8");
++            $result = mysql_query("update BOARD set maintext=\"$main_text\" where boardid=$boardid");
++
++            //トランザクション終了
++            if( $result ) {
++                mysql_query("commit", $this->_link);//更新
++            }
++            else {
++                mysql_query("roolback", $this->_link);//ロールバック
++            }
++        }
++    }
++
++    $se_edit = new EditSend();
++    $se_edit->SqlSend();
++    header("Location: ../index.php");//別のページに遷移させる
++?>
+\ No newline at end of file
+Index: registration.php
+===================================================================
+--- registration.php	(revision 0)
++++ registration.php	(working copy)
+@@ -0,0 +1,47 @@
++<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
++ "http://www.w3.org/TR/html4/loose.dtd">
++
++<html>
++
++	<head>
++		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
++		<link rel="stylesheet" type="text/css" href="./css/body_css.css">
++		<title>新規登録画面</title>
++	</head>
++
++	<body>
++		<font class="tw"><hr><center>登録画面</center><br></font>
++		<table border=4 width=500 align=center>
++		<form action="./php/sql_registration.php" method="POST">
++		<tr align=center>
++		<td><font class="tw"><p><label>件名:</font></tb>
++		<td><input type="text" name="件名" value="件名入力" tabindex="0" accesskey="a"></tb>
++		</label>
++
++		<td><font class="tw"><label>お名前:</font></tb>
++		<td><input type="text" name="名前" value="名前入力" tabindex="1" accesskey="b"></tb>
++		</label></p>
++		</tr>
++		
++		<tr align=center>
++		<td><font class="tw"><p><label>メールアドレス</font></tb>
++		<td colspan=4><input type="text" name="メールアドレス" value="" tabindex="2" accesskey="c"></tb>
++		</label></p>
++		</tr>
++
++		<tr align=center>
++		<td><font class="tw"><p><label>本文:</font></td>
++		<td colspan=4><textarea name="MSG" cols=40 rows=4></textarea>
++		</label></p>
++		</tr>
++		</table>
++		<br>
++		<center>
++		<input type=submit value="送信">
++		</center>
++		</form>
++		<br>
++		
++		<a href="index.php"><center>HOME</center></a><br>
++	</body>
++</html>

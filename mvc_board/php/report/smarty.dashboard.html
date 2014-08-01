@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>smarty</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="jquery.min.js" type="text/javascript"></script>
+    <script src="highcharts.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+          var classCoverageDistribution = new Highcharts.Chart({
+             chart: {
+                renderTo: 'classCoverageDistribution',
+                type: 'column'
+             },
+             title: {text: ''},
+             legend: {enabled: false},
+             credits: {enabled: false},
+             tooltip: {enabled: false},
+             xAxis: {
+                 labels: {style: {fontSize: '8px'}},
+                 categories: [
+                 '0%','0-10%','10-20%','20-30%','30-40%','40-50%','50-60%','60-70%','70-80%','80-90%','90-100%','100%'
+                 ]
+            },
+            yAxis: {
+                title: '',
+                labels: {style: {fontSize: '8px'}},
+            },
+            series: [{
+                data: [14,0,0,0,0,0,0,0,0,0,0,2]
+            }],
+          });
+
+        var classComplexity = new Highcharts.Chart({
+            chart: {
+              renderTo: 'classComplexity',
+              type: 'scatter'
+            },
+            title: {text: ''},
+            legend: {enabled: false},
+            credits: {enabled: false},
+            xAxis: {
+               labels: {enabled: false},
+            },
+            yAxis: {
+              title: '',
+              labels: {enabled: false},
+            },
+            tooltip: {
+                formatter: function() {
+                    return this.point.config[2];
+                }
+            },
+            series: [{
+              data: [[0,122,"<a href=\"smarty_libs_Smarty.class.php.html#107\">Smarty<\/a>"],[100,0,"<a href=\"smarty_libs_Smarty.class.php.html#1483\">SmartyException<\/a>"],[100,0,"<a href=\"smarty_libs_Smarty.class.php.html#1490\">SmartyCompilerException<\/a>"],[0,25,"<a href=\"smarty_libs_sysplugins_smarty_cacheresource.php.html#16\">Smarty_CacheResource<\/a>"],[0,32,"<a href=\"smarty_libs_sysplugins_smarty_cacheresource.php.html#207\">Smarty_Template_Cached<\/a>"],[0,51,"<a href=\"smarty_libs_sysplugins_smarty_internal_cacheresource_file.php.html#19\">Smarty_Internal_CacheResource_File<\/a>"],[0,80,"<a href=\"smarty_libs_sysplugins_smarty_internal_data.php.html#18\">Smarty_Internal_Data<\/a>"],[0,5,"<a href=\"smarty_libs_sysplugins_smarty_internal_data.php.html#426\">Smarty_Data<\/a>"],[0,2,"<a href=\"smarty_libs_sysplugins_smarty_internal_data.php.html#467\">Smarty_Variable<\/a>"],[0,3,"<a href=\"smarty_libs_sysplugins_smarty_internal_data.php.html#522\">Undefined_Smarty_Variable<\/a>"],[0,11,"<a href=\"smarty_libs_sysplugins_smarty_internal_resource_file.php.html#19\">Smarty_Internal_Resource_File<\/a>"],[0,148,"<a href=\"smarty_libs_sysplugins_smarty_internal_template.php.html#22\">Smarty_Internal_Template<\/a>"],[0,165,"<a href=\"smarty_libs_sysplugins_smarty_internal_templatebase.php.html#18\">Smarty_Internal_TemplateBase<\/a>"],[0,86,"<a href=\"smarty_libs_sysplugins_smarty_resource.php.html#18\">Smarty_Resource<\/a>"],[0,13,"<a href=\"smarty_libs_sysplugins_smarty_resource.php.html#594\">Smarty_Template_Source<\/a>"],[0,1,"<a href=\"smarty_libs_sysplugins_smarty_resource.php.html#802\">Smarty_Template_Compiled<\/a>"]],
+              marker: {
+                  symbol: 'diamond'
+              }
+            }],
+        });
+    });
+    </script>
+  </head>
+
+  <body>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr><td class="title">smarty</td></tr>
+      <tr><td><div align="center"><p><a href="smarty.html">Back to Code Coverage report</a></p></div></td></tr>
+      <tr><td class="ruler"><img src="glass.png" width="3" height="3" alt=""></td></tr>
+    </table>
+
+    <br />
+
+    <center>
+      <table width="90%" cellpadding="2" cellspacing="1" border="0">
+        <tr>
+          <td valign="top">
+            <h2>Class Coverage Distribution</h2>
+            <div id="classCoverageDistribution"></div>
+          </td>
+
+          <td valign="top">
+            <h2>Class Complexity</h2>
+            <div id="classComplexity"></div>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">
+            <h2>Top Project Risks</h2>
+            <ul>
+              <li><a href="smarty_libs_sysplugins_smarty_internal_templatebase.php.html#18">Smarty_Internal_TemplateBase</a> (27390)</li>
+              <li><a href="smarty_libs_sysplugins_smarty_internal_template.php.html#22">Smarty_Internal_Template</a> (22052)</li>
+              <li><a href="smarty_libs_Smarty.class.php.html#107">Smarty</a> (15006)</li>
+              <li><a href="smarty_libs_sysplugins_smarty_resource.php.html#18">Smarty_Resource</a> (7482)</li>
+              <li><a href="smarty_libs_sysplugins_smarty_internal_data.php.html#18">Smarty_Internal_Data</a> (6480)</li>
+              <li><a href="smarty_libs_sysplugins_smarty_internal_cacheresource_file.php.html#19">Smarty_Internal_CacheResource_File</a> (2652)</li>
+              <li><a href="smarty_libs_sysplugins_smarty_cacheresource.php.html#207">Smarty_Template_Cached</a> (1056)</li>
+              <li><a href="smarty_libs_sysplugins_smarty_cacheresource.php.html#16">Smarty_CacheResource</a> (650)</li>
+              <li><a href="smarty_libs_sysplugins_smarty_resource.php.html#594">Smarty_Template_Source</a> (182)</li>
+              <li><a href="smarty_libs_sysplugins_smarty_internal_resource_file.php.html#19">Smarty_Internal_Resource_File</a> (132)</li>
+
+            </ul>
+          </td>
+
+          <td valign="top">
+            <h2>Least Tested Methods</h2>
+            <ul>
+              <li><a href="smarty_libs_sysplugins_smarty_internal_template.php.html#544">Smarty_Internal_Template::_count</a> (0%)</li>
+              <li><a href="smarty_libs_sysplugins_smarty_internal_template.php.html#572">Smarty_Internal_Template::capture_error</a> (0%)</li>
+              <li><a href="smarty_libs_sysplugins_smarty_internal_template.php.html#583">Smarty_Internal_Template::clearCache</a> (0%)</li>
+              <li><a href="smarty_libs_sysplugins_smarty_internal_template.php.html#524">Smarty_Internal_Template::getScopePointer</a> (0%)</li>
+              <li><a href="smarty_libs_sysplugins_smarty_internal_template.php.html#501">Smarty_Internal_Template::getScope</a> (0%)</li>
+              <li><a href="smarty_libs_sysplugins_smarty_internal_template.php.html#419">Smarty_Internal_Template::decodeProperties</a> (0%)</li>
+              <li><a href="smarty_libs_sysplugins_smarty_internal_template.php.html#480">Smarty_Internal_Template::createLocalArrayVariable</a> (0%)</li>
+              <li><a href="smarty_libs_sysplugins_smarty_internal_template.php.html#595">Smarty_Internal_Template::__set</a> (0%)</li>
+              <li><a href="smarty_libs_sysplugins_smarty_internal_template.php.html#621">Smarty_Internal_Template::__get</a> (0%)</li>
+              <li><a href="smarty_libs_sysplugins_smarty_internal_templatebase.php.html#407">Smarty_Internal_TemplateBase::createData</a> (0%)</li>
+
+            </ul>
+          </td>
+        </tr>
+      </table>
+    </center>
+
+    <br />
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr><td class="ruler"><img src="glass.png" width="3" height="3" alt=""></td></tr>
+      <tr><td class="versionInfo">Generated by <a href="http://github.com/sebastianbergmann/php-code-coverage" target="_top">PHP_CodeCoverage 1.1.3</a> using <a href="http://www.php.net/" target="_top">PHP 5.3.16</a> and PHPUnit 3.6.12 at Thu Aug 30 17:01:47 JST 2012.</td></tr>
+    </table>
+
+    <br/>
+  </body>
+</html>

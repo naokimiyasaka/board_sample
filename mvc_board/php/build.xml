@@ -1,0 +1,35 @@
+<project name="PHP Code Check" default="build">
+  <property name="basedir" value="./" />
+
+  <target name="phpcs" description="Check PHP Code Sniffer">
+    <phpcodesniffer standard="PEAR">
+      <fileset dir="${basedir}">
+        <include name="*.php" />
+      </fileset>
+      <formatter type="default" usefile="false" />
+    </phpcodesniffer>
+  </target>
+
+  <target name="phpmd" description="Check PHP Mess Detector">
+    <phpmd rulesets="codesize,unusedcode,design,naming">
+      <fileset dir="${basedir}">
+        <include name="*.php" />
+      </fileset>
+      <formatter type="text" usefile="false" />
+    </phpmd>
+  </target>
+
+  <target name="phplint" description="Check PHP Code Syntax">
+    <phplint>
+      <fileset dir="${basedir}">
+        <include name="*.php" />
+      </fileset>
+    </phplint>
+  </target>
+
+  <target name="build" depends="phplint,phpcs,phpmd" description="Execute build process">
+  </target>
+
+</project>
+
+

@@ -1,0 +1,73 @@
+body {
+    background-color: black;
+}
+.tw {
+    color: white;
+    font-size: 10pt;
+}
+a {
+    color: white;
+}
+
+div {
+    float: left;
+    height: 49px;
+    position: relative;
+    width: 31px;
+}
+
+.clear {
+    clear:both;
+    width: 200px;
+}
+
+.img0 {
+    clip: rect(0px, 31px, 49px, 0px);
+    left: 0;
+    position: absolute;
+}
+.img1 {
+    clip: rect(0px, 62px, 49px, 31px);
+    left: -31px;
+    position: absolute;
+}
+.img2 {
+    clip: rect(0px, 93px, 49px, 62px);
+    left: -62px;
+    position: absolute;
+}
+.img3 {
+    clip: rect(0px, 124px, 49px, 93px);
+    left: -93px;
+    position: absolute;
+}
+.img4 {
+    clip: rect(0px, 155px, 49px, 124px);
+    left: -124px;
+    position: absolute;
+}
+.img5 {
+    clip: rect(0px, 186px, 49px, 155px);
+    left: -155px;
+    position: absolute;
+}
+.img6 {
+    clip: rect(0px, 217px, 49px, 186px);
+    left: -186px;
+    position: absolute;
+}
+.img7 {
+    clip: rect(0px, 248px, 49px, 217px);
+    left: -217px;
+    position: absolute;
+}
+.img8 {
+    clip: rect(0px, 279px, 49px, 248px);
+    left: -248px;
+    position: absolute;
+}
+.img9 {
+    clip: rect(0px, 310px, 49px, 279px);
+    left: -279px;
+    position: absolute;
+}

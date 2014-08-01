@@ -1,0 +1,39 @@
+ログインデータ
+
+user_logindata
+
+id,AUTO_INCREMENT　      インデックス
+nama, VARCHAR(20)　　　　名前
+pass, VARCHAR(20)　　　　パスワード
+enable, bool　　         有効フラグ
+record_date, DATE　　　　ログイン日付
+mail, VARCHAR(50)　　　  メールアドレス
+
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| id          | mediumint(9) | NO   | PRI | NULL    | auto_increment |
+| nama        | varchar(20)  | YES  |     | NULL    |                |
+| pass        | varchar(20)  | YES  |     | NULL    |                |
+| enable      | tinyint(1)   | YES  |     | NULL    |                |
+| record_date | date         | YES  |     | NULL    |                |
+| mail        | varchar(50)  | YES  |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+
+
+
+現在掲示板で使用しているデータベース構造
+
+naokimiyasakaデータベース
+BOARDテーブル
+
++----------+---------+------+-----+---------+----------------+
+| Field    | Type    | Null | Key | Default | Extra          |
++----------+---------+------+-----+---------+----------------+
+| boardid  | int(11) | NO   | PRI | NULL    | auto_increment |
+| subject  | text    | YES  |     | NULL    |                |
+| name     | text    | YES  |     | NULL    |                |
+| mail     | text    | YES  |     | NULL    |                |
+| maintext | text    | YES  |     | NULL    |                |
++----------+---------+------+-----+---------+----------------+
+
